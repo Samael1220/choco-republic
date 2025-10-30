@@ -1,0 +1,143 @@
+/* Header - Chocolate themed, modern, responsive */
+:root {
+  --choco-900: #3a1f0e;
+  --choco-800: #4b250f;
+  --choco-700: #5a2d0c;
+  --choco-600: #6c3512;
+  --cream-100: #fbf3eb;
+  --cream-200: #f2e5da;
+  --caramel: #ffcc80;
+  --strawberry: #ff8aa1;
+  --white: #ffffff;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.75),
+      rgba(255, 255, 255, 0.75)
+    ),
+    var(--cream-100);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--cream-200);
+}
+
+.navbar {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: "Poppins", sans-serif;
+}
+
+.brand .logo {
+  display: inline-block;
+  font-weight: 800;
+  text-decoration: none;
+  color: var(--choco-700);
+  font-size: 1.4rem;
+}
+
+/* Hamburger */
+.nav-toggle {
+  display: none;
+}
+.hamburger {
+  width: 34px;
+  height: 28px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+}
+.hamburger span {
+  width: 24px;
+  height: 2px;
+  background: var(--choco-700);
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+/* Links */
+.nav-links {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+}
+.nav-links a {
+  display: inline-block;
+  text-decoration: none;
+  color: var(--choco-800);
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+  font-family: "Poppins", sans-serif;
+}
+.nav-links a:hover {
+  background: var(--caramel);
+  color: #3b1e17;
+}
+.nav-links a.active {
+  background: linear-gradient(120deg, var(--choco-700), var(--choco-600));
+  color: var(--white);
+}
+.login-btn {
+  color: var(--white);
+}
+.login-btn:hover {
+  background: var(--choco-600);
+}
+.cart-link::before {
+  content: "🛒 ";
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+  .nav-links {
+    position: absolute;
+    top: 74px;
+    left: 0;
+    right: 0;
+    background: var(--cream-100);
+    border-bottom: 1px solid var(--cream-200);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    display: none;
+  }
+  .nav-links li {
+    border-top: 1px solid var(--cream-200);
+  }
+  .nav-links a {
+    border-radius: 0;
+    padding: 14px 16px;
+  }
+  .nav-toggle:checked ~ .hamburger span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .nav-toggle:checked ~ .hamburger span:nth-child(2) {
+    opacity: 0;
+  }
+  .nav-toggle:checked ~ .hamburger span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+  .nav-toggle:checked ~ .nav-links {
+    display: flex;
+  }
+}

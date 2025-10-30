@@ -1,0 +1,149 @@
+:root {
+  --accent: #5a2d0c;
+  --accent-dark: #3d1f07;
+  --bg: #f9f4ef;
+  --light: #ffffff;
+  --error: #d9534f;
+  --success: #4bb543;
+  --text: #2f2f2f;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: var(--bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.register-container {
+  background: var(--light);
+  padding: 40px 50px;
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 430px;
+  text-align: center;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.register-container h1 {
+  color: var(--accent);
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+/* Error and Success Messages */
+.error,
+.success {
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-weight: 500;
+  animation: slideDown 0.3s ease;
+}
+
+.error {
+  background: #ffe5e5;
+  color: var(--error);
+}
+
+.success {
+  background: #e6ffed;
+  color: var(--success);
+}
+
+/* Form Inputs */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input {
+  padding: 12px 14px;
+  border: 2px solid #e6d8d0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 5px rgba(90, 45, 12, 0.3);
+  outline: none;
+}
+
+/* Button */
+button {
+  background: var(--accent);
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background: var(--accent-dark);
+  transform: translateY(-2px);
+}
+
+/* Login Link */
+.login-link {
+  margin-top: 18px;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.login-link a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.login-link a:hover {
+  color: var(--accent-dark);
+  text-decoration: underline;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .register-container {
+    padding: 30px 25px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+}

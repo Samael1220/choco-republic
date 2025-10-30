@@ -1,0 +1,172 @@
+:root {
+  --accent: #5a2d0c;
+  --light-bg: #fff8f3;
+  --border-color: #d6c5bb;
+  --text-dark: #4e342e;
+  --text-light: #6d4c41;
+}
+
+/* ===== Orders Section ===== */
+.products {
+  padding: 34px 20px;
+  text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.products h2 {
+  font-size: 1.8rem;
+  color: var(--text-dark);
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.products h2::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 4px;
+  background-color: var(--accent);
+  margin: 10px auto 0;
+  border-radius: 10px;
+}
+
+/* ===== Table Styling ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+th,
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+  color: var(--text-dark);
+  font-size: 0.95rem;
+}
+
+th {
+  background-color: var(--light-bg);
+  color: var(--text-dark);
+  font-weight: 700;
+  text-align: center;
+}
+
+td {
+  text-align: center;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover {
+  background-color: #fff5ef;
+  transition: background 0.2s ease;
+}
+
+/* ===== Details Dropdown ===== */
+details {
+  text-align: left;
+}
+
+summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+summary:hover {
+  color: #43210a;
+}
+
+ul {
+  list-style: none;
+  margin: 8px 0;
+  padding: 0;
+}
+
+ul li {
+  padding: 4px 0;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+/* ===== Form Styling ===== */
+form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: #fff;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  outline: none;
+  cursor: pointer;
+  transition: border 0.2s ease;
+}
+
+select:focus {
+  border-color: var(--accent);
+}
+
+button {
+  background-color: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+button:hover {
+  background-color: #43210a;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  th {
+    display: none;
+  }
+
+  td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+  }
+
+  td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 16px;
+    width: 45%;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-light);
+  }
+}
