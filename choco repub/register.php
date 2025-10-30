@@ -52,65 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Register | Chocolate Republic</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-body {
-    font-family: 'Poppins', sans-serif;
-    background: #f9f1f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-.register-container {
-    background: #fff;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    text-align: center;
-    width: 350px;
-}
-.register-container h1 {
-    margin-bottom: 25px;
-    color: #5a2d0c;
-}
-.register-container input {
-    width: 100%;
-    padding: 12px;
-    margin: 8px 0;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-.register-container button {
-    width: 100%;
-    padding: 12px;
-    background: #5a2d0c;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-}
-.register-container button:hover {
-    background: #43210a;
-}
-.error {
-    color: red;
-    margin-bottom: 15px;
-}
-.success {
-    color: green;
-    margin-bottom: 15px;
-}
-.login-link {
-    margin-top: 15px;
-    font-size: 14px;
-}
-.login-link a {
-    color: #5a2d0c;
-    text-decoration: none;
-    font-weight: 600;
-}
-</style>
+<link href="register.css" rel="stylesheet">
+
 </head>
 <body>
 <div class="register-container">

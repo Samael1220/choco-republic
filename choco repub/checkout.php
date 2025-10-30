@@ -2,6 +2,7 @@
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/db.php';
 requireLogin();
+include __DIR__ . '/includes/header.php';
 
 $userId = (int)$_SESSION['user_id'];
 
@@ -68,50 +69,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-
-include __DIR__ . '/includes/header.php';
 ?>
+<link rel="stylesheet" href="checkout.css">
 
-    <section class="products">
-      <h2>Checkout</h2>
-      <?php if ($error): ?>
-        <p style="color:red;"><?= htmlspecialchars($error) ?></p>
-      <?php endif; ?>
-      <?php if (empty($cartItems)): ?>
-        <p>Your cart is empty.</p>
-      <?php else: ?>
-        <table style="width:100%; border-collapse: collapse;">
-          <tr>
-            <th align="left">Product</th>
-            <th>Qty</th>
-            <th align="right">Price</th>
-          </tr>
-          <?php foreach ($cartItems as $ci): ?>
-            <tr>
-              <td><?= htmlspecialchars($ci['name']) ?></td>
-              <td align="center"><?= (int)$ci['quantity'] ?></td>
-              <td align="right">₱<?= number_format((float)$ci['price'] * (int)$ci['quantity'], 2) ?></td>
-            </tr>
-          <?php endforeach; ?>
-          <tr>
-            <td colspan="2" align="right"><strong>Total</strong></td>
-            <td align="right"><strong>₱<?= number_format($total, 2) ?></strong></td>
-          </tr>
-        </table>
+<section class="checkout-section">
+  <h2>Checkout</h2>
 
-        <form method="post" style="margin-top: 12px;">
-          <input type="hidden" name="csrf" value="<?= htmlspecialchars(csrfToken()) ?>">
-          <label>Payment Method
-            <select name="payment_method">
-              <option value="Cash on Delivery">Cash on Delivery</option>
-            </select>
-          </label>
-          <div style="margin-top: 8px;">
-            <button type="submit">Place Order</button>
+  <?php if ($error): ?>
+    <p class="checkout-error"><?= htmlspecialchars($error) ?></p>
+  <?php endif; ?>
+
+  <?php if (empty($cartItems)): ?>
+    <p class="checkout-empty">Your cart is empty.</p>
+  <?php else: ?>
+    <div class="checkout-summary">
+      <?php foreach ($cartItems as $ci): ?>
+        <div class="checkout-item-row">
+          <div class="ci-thumb">
+           <img src="images/<?= !empty($ci['image']) ? htmlspecialchars($ci['image']) : 'default-product.png' ?>" 
+     alt="<?= htmlspecialchars($ci['name']) ?>">
           </div>
-        </form>
-      <?php endif; ?>
-    </section>
+          <div class="ci-main">
+            <span class="ci-title"><?= htmlspecialchars($ci['name']) ?></span>
+            <span class="ci-meta">Qty: <?= (int)$ci['quantity'] ?></span>
+          </div>
+          <div class="ci-price">₱<?= number_format((float)$ci['price'] * (int)$ci['quantity'], 2) ?></div>
+        </div>
+      <?php endforeach; ?>
 
-<?php include __DIR__ . '/includes/footer.php'; ?>
+      <div class="checkout-total-row">
+        <span class="ct-title">Total:</span>
+        <span class="ct-price">₱<?= number_format($total, 2) ?></span>
+      </div>
+    </div>
+
+    <form method="post" class="checkout-form">
+      <input type="hidden" name="csrf" value="<?= htmlspecialchars(csrfToken()) ?>">
+      
+      <label class="checkout-label" for="payment_method">Payment Method</label>
+      <select id="payment_method" name="payment_method" required>
+        <option value="Cash on Delivery">Cash on Delivery</option>
+      </select>
+
+      <div class="checkout-submit-row">
+        <button type="submit" class="cta-btn">Place Order</button>
+      </div>
+    </form>
+  <?php endif; ?>
+</section>
+
 

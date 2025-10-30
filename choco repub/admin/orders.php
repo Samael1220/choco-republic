@@ -17,9 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verifyCsrf($_POST['csrf'] ?? '')) {
 
 $orders = $conn->query('SELECT o.*, u.name as customer FROM orders o JOIN users u ON u.id=o.user_id ORDER BY order_date DESC');
 
-include __DIR__ . '/../includes/header.php';
+include __DIR__ . '/../includes/headerForA.php';
 ?>
-
+ <link rel="stylesheet" href="orders.css" />
     <section class="products">
       <h2>Manage Orders</h2>
       <table style="width:100%; border-collapse: collapse;">

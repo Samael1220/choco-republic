@@ -2,6 +2,7 @@
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/db.php';
 requireLogin();
+include __DIR__ . '/includes/header.php';
 
 $userId = (int)$_SESSION['user_id'];
 
@@ -20,7 +21,7 @@ while ($row = $result->fetch_assoc()) {
     $items[] = $row;
 }
 
-include __DIR__ . '/includes/header.php';
+
 ?>
 
 <section class="cart-section">
@@ -45,7 +46,7 @@ include __DIR__ . '/includes/header.php';
                     <tr>
                         <td class="product-info">
                             <img src="<?= htmlspecialchars($it['image'] ? 'images/' . basename($it['image']) : 'images/0.png') ?>" alt="<?= htmlspecialchars($it['name']) ?>" />
-                            <a href="/product.php?id=<?= (int)$it['product_id'] ?>"><?= htmlspecialchars($it['name']) ?></a>
+                            <p href="/product.php?id=<?= (int)$it['product_id'] ?>"><?= htmlspecialchars($it['name']) ?></p>
                         </td>
                         <td>₱<?= number_format((float)$it['price'], 2) ?></td>
                         <td>

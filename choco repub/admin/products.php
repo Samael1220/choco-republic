@@ -7,168 +7,207 @@ $res = $conn->query('SELECT * FROM products ORDER BY created_at DESC');
 $products = [];
 while ($row = $res->fetch_assoc()) { $products[] = $row; }
 
-include __DIR__ . '/../includes/header.php';
+include __DIR__ . '/../includes/headerForA.php';
 ?>
 
-    <section class="products">
-      <h2>Manage Products</h2>
-      <a href="product_form.php" style="display:inline-block; margin:8px 0;">+ Add Product</a>
-      <table style="width:100%; border-collapse: collapse;">
+  
+
+<section class="products">
+  <div class="products-header">
+    <h2>🍫 Manage Products</h2>
+    <a href="product_form.php" class="add-btn">+ Add Product</a>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
         <tr>
-          <th align="left">Name</th>
+          <th>Name</th>
           <th>Price</th>
           <th>Stock</th>
           <th>Image</th>
-          <th></th>
+          <th>Actions</th>
         </tr>
+      </thead>
+      <tbody>
         <?php foreach ($products as $p): ?>
           <tr>
-            <td><?= htmlspecialchars($p['name']) ?></td>
-            <td align="center">₱<?= number_format((float)$p['price'], 2) ?></td>
-            <td align="center"><?= (int)$p['stock'] ?></td>
-            <td align="center">
-    <?php if (!empty($p['image'])): ?>
-        <?php
-        // Only the filename
-        $filename = basename($p['image']);
-        $imgPath = "../images/$filename"; // go up one level to reach 'images' folder
-        ?>
-        <img src="<?= htmlspecialchars($imgPath) ?>" alt="<?= htmlspecialchars($p['name']) ?>" style="height:40px;">
-    <?php endif; ?>
-</td>
-            <td align="right">
-              <a href="product_form.php?id=<?= (int)$p['id'] ?>">Edit</a>
-              |
-              <a href="product_delete.php?id=<?= (int)$p['id'] ?>" onclick="return confirm('Delete this product?')">Delete</a>
+            <td data-label="Name"><?= htmlspecialchars($p['name']) ?></td>
+            <td data-label="Price" align="center">₱<?= number_format((float)$p['price'], 2) ?></td>
+            <td data-label="Stock" align="center"><?= (int)$p['stock'] ?></td>
+            <td data-label="Image" align="center">
+              <?php if (!empty($p['image'])): ?>
+                <?php
+                  $filename = basename($p['image']);
+                  $imgPath = "../images/$filename";
+                ?>
+                <img src="<?= htmlspecialchars($imgPath) ?>" alt="<?= htmlspecialchars($p['name']) ?>">
+              <?php endif; ?>
+            </td>
+            <td data-label="Actions" align="center">
+              <a href="product_form.php?id=<?= (int)$p['id'] ?>" class="edit-btn">Edit</a>
+              <a href="product_delete.php?id=<?= (int)$p['id'] ?>" class="delete-btn" onclick="return confirm('Delete this product?')">Delete</a>
             </td>
           </tr>
         <?php endforeach; ?>
-      </table>
-    </section>
+      </tbody>
+    </table>
+  </div>
+</section>
 
-<?php include __DIR__ . '/../includes/footer.php'; ?>
 
 <style>
-  /* Admin Products Page */
+:root {
+  --accent: #5a2d0c;       /* chocolate */
+  --accent-dark: #3d1f07;  /* darker chocolate */
+  --light-bg: #f9f4ef;     /* creamy beige */
+  --table-bg: #ffffff;
+  --text: #2e2e2e;
+}
 
+/* Base Layout */
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f9f1f0;
-    color: #333;
-    line-height: 1.6;
-    padding: 0;
-    margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--light-bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
 }
 
 .products {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
+  max-width: 1100px;
+  margin: 50px auto;
+  padding: 20px;
+}
+
+/* Header */
+.products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
 }
 
 .products h2 {
-    color: #5a2d0c;
-    font-size: 2rem;
-    margin-bottom: 20px;
-    text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--accent);
 }
 
-.products a {
-    background-color: #5a2d0c;
-    color: #fff;
-    text-decoration: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-weight: 600;
-    transition: background 0.2s;
+.add-btn {
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: 0.2s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
 
-.products a:hover {
-    background-color: #43210a;
+.add-btn:hover {
+  background: var(--accent-dark);
 }
 
-/* Table Styling */
-.products table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    border-radius: 8px;
-    overflow: hidden;
+/* Table Container */
+.table-wrapper {
+  background: var(--table-bg);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  overflow-x: auto;
 }
 
-.products th, .products td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-.products th {
-    background-color: #5a2d0c;
-    color: #fff;
-    font-weight: 600;
+thead {
+  background-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
 }
 
-.products tr:nth-child(even) {
-    background-color: #f5f0ec;
+th, td {
+  padding: 14px 18px;
+  text-align: left;
 }
 
-.products tr:hover {
-    background-color: #f1e3d9;
+tr:nth-child(even) {
+  background-color: #f8eee7;
 }
 
-.products img {
-    border-radius: 4px;
+tr:hover {
+  background-color: #f4e1d2;
 }
 
-/* Action Links */
-.products td a {
-    color: #5a2d0c;
-    text-decoration: none;
-    font-weight: 600;
-    margin: 0 4px;
+img {
+  height: 45px;
+  border-radius: 6px;
+  object-fit: cover;
 }
 
-.products td a:hover {
-    text-decoration: underline;
+/* Buttons */
+.edit-btn, .delete-btn {
+  text-decoration: none;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  margin: 0 3px;
+  transition: all 0.2s ease;
 }
 
-/* Responsive Table */
+.edit-btn {
+  background: #f4e1d2;
+  color: var(--accent);
+}
+
+.edit-btn:hover {
+  background: #e0c4a8;
+}
+
+.delete-btn {
+  background: #ffe5e5;
+  color: #b32626;
+}
+
+.delete-btn:hover {
+  background: #ffc7c7;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-    .products table, .products thead, .products tbody, .products th, .products td, .products tr {
-        display: block;
-    }
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
 
-    .products tr {
-        margin-bottom: 15px;
-        border-bottom: 2px solid #ccc;
-    }
+  tr {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+  }
 
-    .products td {
-        padding-left: 50%;
-        text-align: right;
-        position: relative;
-    }
+  td {
+    padding-left: 50%;
+    text-align: right;
+    position: relative;
+  }
 
-    .products td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 15px;
-        width: 45%;
-        padding-right: 10px;
-        text-align: left;
-        font-weight: 600;
-        color: #5a2d0c;
-    }
+  td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 15px;
+    width: 45%;
+    text-align: left;
+    font-weight: 600;
+    color: var(--accent-dark);
+  }
 
-    .products th {
-        display: none;
-    }
-
-    .products img {
-        height: auto;
-        max-width: 100px;
-    }
+  th {
+    display: none;
+  }
 }
-
 </style>
+
+

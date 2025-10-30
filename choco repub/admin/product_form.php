@@ -13,8 +13,9 @@ if ($id) {
     if ($p) { $product = $p; }
 }
 
-include __DIR__ . '/../includes/header.php';
+include __DIR__ . '/../includes/headerForA.php';
 ?>
+<link rel="stylesheet" href="product_form.css">
 
     <section class="products">
       <h2><?= $id ? 'Edit' : 'Add' ?> Product</h2>

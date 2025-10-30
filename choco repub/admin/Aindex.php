@@ -15,34 +15,37 @@ $stats['orders'] = (int)$conn->query('SELECT COUNT(*) c FROM orders')->fetch_ass
 $stats['pending'] = (int)$conn->query("SELECT COUNT(*) c FROM orders WHERE status='pending'")->fetch_assoc()['c'];
 $stats['users'] = (int)$conn->query('SELECT COUNT(*) c FROM users')->fetch_assoc()['c'];
 
-include __DIR__ . '/../includes/header.php';
+include __DIR__ . '/../includes/headerForA.php';
 ?>
+    <link rel="stylesheet" href="aindex.css" />
+<section class="products">
+  <h2>Admin Dashboard</h2>
 
-    <section class="products">
-      <h2>Admin Dashboard</h2>
-      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap:12px;">
-        <div style="border:1px solid #ddd; border-radius:8px; padding:12px;">
-          <strong>Products</strong>
-          <div><?= (int)$stats['products'] ?></div>
-        </div>
-        <div style="border:1px solid #ddd; border-radius:8px; padding:12px;">
-          <strong>Orders</strong>
-          <div><?= (int)$stats['orders'] ?></div>
-        </div>
-        <div style="border:1px solid #ddd; border-radius:8px; padding:12px;">
-          <strong>Pending Orders</strong>
-          <div><?= (int)$stats['pending'] ?></div>
-        </div>
-        <div style="border:1px solid #ddd; border-radius:8px; padding:12px;">
-          <strong>Users</strong>
-          <div><?= (int)$stats['users'] ?></div>
-        </div>
-      </div>
-      <div style="margin-top:16px; display:flex; gap:8px;">
-        <a href="/admin/products.php">Manage Products</a>
-        <a href="/admin/orders.php">Manage Orders</a>
-      </div>
-    </section>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <strong>Products</strong>
+      <div><?= (int)$stats['products'] ?></div>
+    </div>
+    <div class="stat-card">
+      <strong>Orders</strong>
+      <div><?= (int)$stats['orders'] ?></div>
+    </div>
+    <div class="stat-card">
+      <strong>Pending Orders</strong> 
+      <div><?= (int)$stats['pending'] ?></div>
+    </div>
+    <div class="stat-card">
+      <strong>Users</strong>
+      <div><?= (int)$stats['users'] ?></div>
+    </div>
+  </div>
 
-<?php include __DIR__ . '/../includes/footer.php'; ?>
+  <div class="links-row">
+    <a href="products.php">Manage Products</a>
+    <a href="orders.php">Manage Orders</a>
+  </div>
+</section>
+
+
+
 

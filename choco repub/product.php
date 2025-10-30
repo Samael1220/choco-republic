@@ -47,7 +47,7 @@ include __DIR__ . '/includes/header.php';
 <p style="padding:20px;">Product not found.</p>
 <?php endif; ?>
 
-<?php include __DIR__ . '/includes/footer.php'; ?>
+
 
 <style>
 /* Single Product Page Styling */

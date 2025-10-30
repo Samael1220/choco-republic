@@ -2,6 +2,8 @@
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/db.php';
 
+include __DIR__ . '/includes/header.php';
+
 $q = trim($_GET['q'] ?? '');
 
 $sql = "SELECT id, name, price, image FROM products";
@@ -21,7 +23,7 @@ if ($result) {
     }
 }
 
-include __DIR__ . '/includes/header.php';
+
 ?>
 
 <section class="products-page">
@@ -52,7 +54,7 @@ include __DIR__ . '/includes/header.php';
     </div>
 </section>
 
-<?php include __DIR__ . '/includes/footer.php'; ?>
+
 
 <style>
 /* Products Page Styling */
