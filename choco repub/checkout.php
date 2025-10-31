@@ -7,13 +7,26 @@ include __DIR__ . '/includes/header.php';
 $userId = (int)$_SESSION['user_id'];
 
 // Fetch cart
-$stmt = $conn->prepare("SELECT c.id as cart_id, p.id as product_id, p.name, p.price, p.stock, c.quantity
-                         FROM cart c JOIN products p ON p.id = c.product_id WHERE c.user_id = ?");
+$stmt = $conn->prepare("
+    SELECT 
+        c.id AS cart_id,
+        p.id AS product_id,
+        p.name,
+        p.price,
+        p.stock,
+        p.image,       -- ✅ Add this line
+        c.quantity
+    FROM cart c
+    JOIN products p ON p.id = c.product_id
+    WHERE c.user_id = ?
+");
 $stmt->bind_param('i', $userId);
 $stmt->execute();
 $result = $stmt->get_result();
+
 $cartItems = [];
 $total = 0.0;
+
 while ($row = $result->fetch_assoc()) {
     $line = (float)$row['price'] * (int)$row['quantity'];
     $total += $line;
@@ -86,9 +99,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <?php foreach ($cartItems as $ci): ?>
         <div class="checkout-item-row">
           <div class="ci-thumb">
-           <img src="images/<?= !empty($ci['image']) ? htmlspecialchars($ci['image']) : 'default-product.png' ?>" 
+  <img src="/choco_repub/images/<?= !empty($ci['image']) ? htmlspecialchars(basename($ci['image'])) : 'default-product.png' ?>" 
      alt="<?= htmlspecialchars($ci['name']) ?>">
-          </div>
+</div>
           <div class="ci-main">
             <span class="ci-title"><?= htmlspecialchars($ci['name']) ?></span>
             <span class="ci-meta">Qty: <?= (int)$ci['quantity'] ?></span>

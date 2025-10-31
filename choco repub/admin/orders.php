@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verifyCsrf($_POST['csrf'] ?? '')) {
         $stmt->bind_param('si', $status, $orderId);
         $stmt->execute();
     }
-    header('Location: /admin/orders.php');
+    header('Location: orders.php');
     exit();
 }
 

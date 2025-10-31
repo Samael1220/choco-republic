@@ -63,7 +63,7 @@ include __DIR__ . '/../includes/headerForA.php';
 </div>
         <div style="margin-top:8px;">
           <button type="submit">Save</button>
-          <a href="/admin/products.php">Cancel</a>
+          <a href="products.php">Cancel</a>
         </div>
       </form>
     </section>

@@ -17,7 +17,7 @@ require_once __DIR__ . '/auth.php';
     </label>
 
     <ul class="nav-links">
-      <li><a href="index.php" class="active">Home</a></li>
+      <li><a href="Aindex.php" class="active">Home</a></li>
       <li><a href="products.php">Products</a></li>
       <?php if (isLoggedIn()): ?>
         <li><a href="orders.php">My Orders</a></li>
