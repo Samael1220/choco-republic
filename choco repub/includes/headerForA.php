@@ -21,9 +21,7 @@ require_once __DIR__ . '/auth.php';
       <li><a href="products.php">Products</a></li>
       <?php if (isLoggedIn()): ?>
         <li><a href="orders.php">My Orders</a></li>
-        <?php if (isAdmin()): ?>
-          <li><a href="Aindex.php">Admin</a></li>
-        <?php endif; ?>
+        
         <li><a href="logout.php" class="logout-link">Logout</a></li>
       <?php else: ?>
         <li><a href="login.php" id="login-btn" class="login-btn">Login</a></li>
