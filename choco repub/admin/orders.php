@@ -19,56 +19,58 @@ $orders = $conn->query('SELECT o.*, u.name as customer FROM orders o JOIN users 
 
 include __DIR__ . '/../includes/headerForA.php';
 ?>
- <link rel="stylesheet" href="orders.css" />
-    <section class="products">
-      <h2>Manage Orders</h2>
-      <table style="width:100%; border-collapse: collapse;">
-        <tr>
-          <th align="left">Order</th>
-          <th>Customer</th>
-          <th>Total</th>
-          <th>Status</th>
-          <th>Placed</th>
-          <th></th>
-        </tr>
-        <?php while ($o = $orders->fetch_assoc()): ?>
-          <tr>
-            <td>#<?= (int)$o['id'] ?></td>
-            <td align="center"><?= htmlspecialchars($o['customer']) ?></td>
-            <td align="center">₱<?= number_format((float)$o['total_amount'], 2) ?></td>
-            <td align="center"><?= htmlspecialchars($o['status']) ?></td>
-            <td align="center"><?= htmlspecialchars($o['order_date']) ?></td>
-            <td align="right">
-              <details>
-                <summary>View / Update</summary>
-                <?php
-                  $oi = $conn->prepare('SELECT product_name, quantity, price FROM order_items WHERE order_id = ?');
-                  $oid = (int)$o['id'];
-                  $oi->bind_param('i', $oid);
-                  $oi->execute();
-                  $items = $oi->get_result();
-                ?>
-                <ul>
-                  <?php while ($it = $items->fetch_assoc()): ?>
-                    <li><?= htmlspecialchars($it['product_name']) ?> × <?= (int)$it['quantity'] ?> — ₱<?= number_format((float)$it['price'] * (int)$it['quantity'], 2) ?></li>
-                  <?php endwhile; ?>
-                </ul>
-                <form method="post">
-                  <input type="hidden" name="csrf" value="<?= htmlspecialchars(csrfToken()) ?>">
-                  <input type="hidden" name="order_id" value="<?= (int)$o['id'] ?>">
-                  <select name="status">
-                    <option value="pending" <?= $o['status']==='pending'?'selected':'' ?>>pending</option>
-                    <option value="completed" <?= $o['status']==='completed'?'selected':'' ?>>completed</option>
-                    <option value="cancelled" <?= $o['status']==='cancelled'?'selected':'' ?>>cancelled</option>
-                  </select>
-                  <button type="submit">Update</button>
-                </form>
-              </details>
-            </td>
-          </tr>
-        <?php endwhile; ?>
-      </table>
-    </section>
+<link rel="stylesheet" href="orders.css" />
 
-<?php include __DIR__ . '/../includes/footer.php'; ?>
+<section class="admin-orders-section">
+  <h2>Manage Orders</h2>
 
+  <?php if ($orders->num_rows === 0): ?>
+    <p class="no-orders">No orders found.</p>
+  <?php else: ?>
+    <div class="orders-grid">
+      <?php while ($o = $orders->fetch_assoc()): ?>
+        <div class="order-card">
+          <div class="order-header">
+            <span class="order-id">#<?= (int)$o['id'] ?></span>
+            <span class="order-status <?= htmlspecialchars($o['status']) ?>">
+              <?= htmlspecialchars(ucwords($o['status'])) ?>
+            </span>
+          </div>
+
+          <p class="customer-name">👤 <?= htmlspecialchars($o['customer']) ?></p>
+          <p class="order-meta">
+            📅 <?= htmlspecialchars($o['order_date']) ?> — 💰 ₱<?= number_format((float)$o['total_amount'], 2) ?>
+          </p>
+
+          <ul class="order-items">
+            <?php
+              $oi = $conn->prepare('SELECT product_name, quantity, price FROM order_items WHERE order_id = ?');
+              $oid = (int)$o['id'];
+              $oi->bind_param('i', $oid);
+              $oi->execute();
+              $items = $oi->get_result();
+              while ($it = $items->fetch_assoc()):
+            ?>
+            <li class="order-item">
+              <span class="item-name"><?= htmlspecialchars($it['product_name']) ?></span>
+              <span class="item-qty">× <?= (int)$it['quantity'] ?></span>
+              <span class="item-total">₱<?= number_format((float)$it['price'] * (int)$it['quantity'], 2) ?></span>
+            </li>
+            <?php endwhile; ?>
+          </ul>
+
+          <form method="post" class="status-form">
+            <input type="hidden" name="csrf" value="<?= htmlspecialchars(csrfToken()) ?>">
+            <input type="hidden" name="order_id" value="<?= (int)$o['id'] ?>">
+            <select name="status">
+              <option value="pending" <?= $o['status']==='pending'?'selected':'' ?>>Pending</option>
+              <option value="completed" <?= $o['status']==='completed'?'selected':'' ?>>Completed</option>
+              <option value="cancelled" <?= $o['status']==='cancelled'?'selected':'' ?>>Cancelled</option>
+            </select>
+            <button type="submit">Update</button>
+          </form>
+        </div>
+      <?php endwhile; ?>
+    </div>
+  <?php endif; ?>
+</section>

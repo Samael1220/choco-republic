@@ -14,7 +14,7 @@ $stmt = $conn->prepare("
         p.name,
         p.price,
         p.stock,
-        p.image,       -- ✅ Add this line
+        p.image,
         c.quantity
     FROM cart c
     JOIN products p ON p.id = c.product_id
@@ -57,6 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $price = (float)$ci['price'];
                 $pid = (int)$ci['product_id'];
                 $oi->bind_param('iisid', $orderId, $pid, $pn, $qty, $price);
+
                 $oi->execute();
 
                 // decrement stock
@@ -86,49 +87,178 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <link rel="stylesheet" href="checkout.css">
 
 <section class="checkout-section">
-  <h2>Checkout</h2>
-
-  <?php if ($error): ?>
-    <p class="checkout-error"><?= htmlspecialchars($error) ?></p>
-  <?php endif; ?>
-
-  <?php if (empty($cartItems)): ?>
-    <p class="checkout-empty">Your cart is empty.</p>
-  <?php else: ?>
-    <div class="checkout-summary">
-      <?php foreach ($cartItems as $ci): ?>
-        <div class="checkout-item-row">
-          <div class="ci-thumb">
-  <img src="/choco_repub/images/<?= !empty($ci['image']) ? htmlspecialchars(basename($ci['image'])) : 'default-product.png' ?>" 
-     alt="<?= htmlspecialchars($ci['name']) ?>">
-</div>
-          <div class="ci-main">
-            <span class="ci-title"><?= htmlspecialchars($ci['name']) ?></span>
-            <span class="ci-meta">Qty: <?= (int)$ci['quantity'] ?></span>
+  <div class="checkout-container">
+    <!-- Sidebar Progress -->
+    <div class="checkout-sidebar">
+      <div class="sidebar-header">
+        <h2>Checkout Process</h2>
+      </div>
+      <div class="progress-steps">
+        <div class="step completed">
+          <div class="step-marker">
+            <span>1</span>
           </div>
-          <div class="ci-price">₱<?= number_format((float)$ci['price'] * (int)$ci['quantity'], 2) ?></div>
+          <div class="step-info">
+            <span class="step-title">Shopping Cart</span>
+            <span class="step-desc">Review items</span>
+          </div>
         </div>
-      <?php endforeach; ?>
-
-      <div class="checkout-total-row">
-        <span class="ct-title">Total:</span>
-        <span class="ct-price">₱<?= number_format($total, 2) ?></span>
+        <div class="step active">
+          <div class="step-marker">
+            <span>2</span>
+          </div>
+          <div class="step-info">
+            <span class="step-title">Checkout</span>
+            <span class="step-desc">Payment & confirm</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-marker">
+            <span>3</span>
+          </div>
+          <div class="step-info">
+            <span class="step-title">Confirmation</span>
+            <span class="step-desc">Order complete</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="order-summary-sidebar">
+        <h3>Order Summary</h3>
+        <div class="summary-items">
+          <?php foreach ($cartItems as $ci): ?>
+            <div class="summary-item">
+              <img src="/choco_repub/images/<?= !empty($ci['image']) ? htmlspecialchars(basename($ci['image'])) : 'default-product.png' ?>" 
+                   alt="<?= htmlspecialchars($ci['name']) ?>">
+              <div class="item-info">
+                <span class="item-name"><?= htmlspecialchars($ci['name']) ?></span>
+                <span class="item-qty">Qty: <?= (int)$ci['quantity'] ?></span>
+              </div>
+              <span class="item-price">₱<?= number_format((float)$ci['price'] * (int)$ci['quantity'], 2) ?></span>
+            </div>
+          <?php endforeach; ?>
+        </div>
+        <div class="summary-total">
+          <div class="total-line">
+            <span>Subtotal</span>
+            <span>₱<?= number_format($total, 2) ?></span>
+          </div>
+          <div class="total-line">
+            <span>Shipping</span>
+            <span>Free</span>
+          </div>
+          <div class="total-line grand">
+            <span>Total</span>
+            <span>₱<?= number_format($total, 2) ?></span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <form method="post" class="checkout-form">
-      <input type="hidden" name="csrf" value="<?= htmlspecialchars(csrfToken()) ?>">
-      
-      <label class="checkout-label" for="payment_method">Payment Method</label>
-      <select id="payment_method" name="payment_method" required>
-        <option value="Cash on Delivery">Cash on Delivery</option>
-      </select>
-
-      <div class="checkout-submit-row">
-        <button type="submit" class="cta-btn">Place Order</button>
+    <!-- Main Content -->
+    
+    <!-- Main Content -->
+<div class="checkout-main">
+  <?php if ($error): ?>
+    <div class="alert-message error">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-text">
+        <strong>Error:</strong> <?= htmlspecialchars($error) ?>
       </div>
-    </form>
+    </div>
   <?php endif; ?>
+
+  <?php if (empty($cartItems)): ?>
+    <div class="empty-state">
+      <div class="empty-icon">🛒</div>
+      <h3>Your cart is empty</h3>
+      <p>Add some delicious chocolates to your cart first!</p>
+      <a href="products.php" class="btn btn-primary">Continue Shopping</a>
+    </div>
+  <?php else: ?>
+    <div class="checkout-content">
+      <header class="checkout-header">
+        <h1>Complete Your Order</h1>
+        <p>Review your details and confirm purchase</p>
+      </header>
+
+      <form method="post" class="checkout-form">
+        <input type="hidden" name="csrf" value="<?= htmlspecialchars(csrfToken()) ?>">
+        
+        <div class="form-section">
+          <div class="section-title">
+            <h2>Payment Method</h2>
+           
+          </div>
+          
+          <div class="payment-options">
+            <div class="payment-option">
+              <input type="radio" name="payment_method" value="Cash on Delivery" id="cod" checked>
+              <label for="cod" class="payment-card">
+                <div class="payment-header">
+                  <div class="payment-icon">💵</div>
+                  <div class="payment-info">
+                    <span class="payment-name">Cash on Delivery</span>
+                    <span class="payment-desc">Pay when you receive your order</span>
+                  </div>
+                  <div class="radio-indicator"></div>
+                </div>
+              </label>
+            </div>
+            
+            <div class="payment-option disabled">
+              <input type="radio" name="payment_method" value="Credit Card" id="card" disabled>
+              <label for="card" class="payment-card">
+                <div class="payment-header">
+                  <div class="payment-icon">💳</div>
+                  <div class="payment-info">
+                    <span class="payment-name">Credit/Debit Card</span>
+                    <span class="payment-desc">Coming soon</span>
+                  </div>
+                  <div class="radio-indicator"></div>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="trust-badges">
+          <div class="trust-item">
+            <span class="trust-icon">🔒</span>
+            <div class="trust-text">
+              <strong>Secure Checkout</strong>
+              <span>Your data is protected</span>
+            </div>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon">🚚</span>
+            <div class="trust-text">
+              <strong>Free Delivery</strong>
+              <span>On all orders</span>
+            </div>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon">↩️</span>
+            <div class="trust-text">
+              <strong>Easy Returns</strong>
+              <span>30-day policy</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-section">
+          <button type="submit" class="order-btn">
+            <span class="order-text">
+              <span class="main-text">Place Your Order</span>
+              <span class="sub-text">Total: ₱<?= number_format($total, 2) ?></span>
+            </span>
+            <span class="btn-arrow">→</span>
+          </button>
+         
+        </div>
+      </form>
+    </div>
+  <?php endif; ?>
+
+  </div>
 </section>
-
-

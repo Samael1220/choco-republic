@@ -22,147 +22,211 @@ if ($result) {
         $products[] = $row;
     }
 }
-
-
 ?>
 
 <section class="products-page">
-    <h2>Products</h2>
+  <div class="products-header">
+    <h2>All Chocolates</h2>
     <form method="get" class="search-form">
-        <input type="text" name="q" placeholder="Search products" value="<?= htmlspecialchars($q) ?>">
-        <button type="submit">Search</button>
+      <input type="text" name="q" placeholder="Search sweet treats..." value="<?= htmlspecialchars($q) ?>">
+      <button type="submit" class="btn primary">Search</button>
     </form>
+  </div>
 
+  <?php if (empty($products)): ?>
+    <p class="no-results">No products found.</p>
+  <?php else: ?>
     <div class="product-grid">
-        <?php foreach ($products as $p): 
-            $imgPath = !empty($p['image']) ? 'images/' . basename($p['image']) : 'images/0.png';
-        ?>
-        <div class="product-card">
-            <a href="product.php?id=<?= (int)$p['id'] ?>">
-                <img src="<?= htmlspecialchars($imgPath) ?>" alt="<?= htmlspecialchars($p['name']) ?>">
-                <p><?= htmlspecialchars($p['name']) ?></p>
-            </a>
-            <p class="price">₱<?= number_format((float)$p['price'], 2) ?></p>
-            <form method="post" action="cart_add.php">
-                <input type="hidden" name="csrf" value="<?= htmlspecialchars(csrfToken()) ?>">
-                <input type="hidden" name="product_id" value="<?= (int)$p['id'] ?>">
-                <input type="number" name="quantity" min="1" value="1">
-                <button type="submit">Add to Cart</button>
-            </form>
-        </div>
-        <?php endforeach; ?>
+      <?php foreach ($products as $p): 
+        $imgPath = !empty($p['image']) ? 'images/' . basename($p['image']) : 'images/0.png';
+      ?>
+      <div class="product-card">
+        <a href="product.php?id=<?= (int)$p['id'] ?>">
+          <div class="img-wrap">
+            <img src="<?= htmlspecialchars($imgPath) ?>" alt="<?= htmlspecialchars($p['name']) ?>">
+          </div>
+          <p><?= htmlspecialchars($p['name']) ?></p>
+        </a>
+        <p class="price">₱<?= number_format((float)$p['price'], 2) ?></p>
+        <form method="post" action="cart_add.php" class="add-form">
+          <input type="hidden" name="csrf" value="<?= htmlspecialchars(csrfToken()) ?>">
+          <input type="hidden" name="product_id" value="<?= (int)$p['id'] ?>">
+          <input type="number" name="quantity" min="1" value="1">
+          <button type="submit" class="btn small">Add to Cart</button>
+        </form>
+      </div>
+      <?php endforeach; ?>
     </div>
+  <?php endif; ?>
 </section>
 
 
 
 <style>
-/* Products Page Styling */
+    body{
+         font-family: "Poppins", sans-serif;
+    }
+   
+/* ===== Products Page ===== */
 .products-page {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 0 20px 50px;
+  text-align: center;
+}
+
+.products-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
 }
 
 .products-page h2 {
-    text-align: center;
-    color: #5a2d0c;
-    margin-bottom: 20px;
-    font-size: 2rem;
+  font-size: 2rem;
+  color: #4e342e;
+  margin-bottom: 14px;
 }
 
 .search-form {
-    text-align: center;
-    margin-bottom: 30px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .search-form input[type="text"] {
-    width: 200px;
-    padding: 6px 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    margin-right: 5px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid #d6c5bb;
+  outline: none;
+  width: 250px;
+  background: #fff8f3;
+  color: #4e342e;
+  font-family: "Poppins", sans-serif;
 }
 
-.search-form button {
-    background: #5a2d0c;
-    color: #fff;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background 0.2s;
+.search-form input::placeholder {
+  color: #9e7b6b;
 }
 
-.search-form button:hover {
-    background: #43210a;
+.btn {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
 }
 
+.btn.primary {
+  background: #5a2d0c;
+  color: #fff;
+}
+
+.btn.primary:hover {
+  background: #43210a;
+}
+
+.btn.small {
+  padding: 8px 12px;
+  background: #5a2d0c;
+  color: #fff;
+}
+
+.btn.small:hover {
+  background: #43210a;
+}
+
+/* ===== Product Grid ===== */
 .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 32px;
+  justify-items: center;
 }
 
 .product-card {
-    background: #fff;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    text-align: center;
-    transition: transform 0.2s, box-shadow 0.2s;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px;
+  text-align: center;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.14);
+}
+
+.img-wrap {
+  width: 220px;
+  height: 220px;
+  margin: 0 auto 12px;
+  border-radius: 12px;
+  background: #fff8f3;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
 }
 
 .product-card img {
-    max-width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 10px;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
-.product-card p {
-    margin: 5px 0;
+.product-card p,a  {
+  margin: 6px 0;
+  font-weight: 700;
+  color: #4e342e;
+  font-size: 1rem;
+  text-decoration: none;
 }
 
-.product-card .price {
-    color: #5a2d0c;
-    font-weight: 700;
-    margin: 10px 0;
+.price {
+  color: #5a2d0c;
+  font-weight: 800;
+  margin-top: 6px;
 }
 
-.product-card input[type="number"] {
-    width: 60px;
-    padding: 6px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    margin-right: 5px;
+.add-form {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
 }
 
-.product-card button {
-    background: #5a2d0c;
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
+.add-form input[type="number"] {
+  width: 64px;
+  padding: 6px;
+  border-radius: 8px;
+  border: 1px solid #d6c5bb;
 }
 
-.product-card button:hover {
-    background: #43210a;
+/* ===== No Results ===== */
+.no-results {
+  font-size: 1.1rem;
+  color: #6d4c41;
+  background: #fff8f3;
+  padding: 16px 20px;
+  border-radius: 12px;
+  display: inline-block;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
 }
 
-/* Responsive */
+/* ===== Responsive ===== */
 @media (max-width: 768px) {
-    .product-grid {
-        grid-template-columns: 1fr;
-    }
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .search-form input[type="text"] {
+    width: 80%;
+  }
 }
 </style>
