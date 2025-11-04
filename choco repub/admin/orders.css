@@ -1,172 +1,214 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
 :root {
-  --accent: #5a2d0c;
-  --light-bg: #fff8f3;
-  --border-color: #d6c5bb;
-  --text-dark: #4e342e;
-  --text-light: #6d4c41;
+  --choco-900: #3a1f0e;
+  --choco-800: #4b250f;
+  --choco-700: #5a2d0c;
+  --caramel: #ffcc80;
+  --strawberry: #ff8aa1;
+  --cream-bg: #f7efe9;
+  --green: #43b97b;
+  --yellow: #ffdc74;
+  --gray: #ece9e0;
 }
 
-/* ===== Orders Section ===== */
-.products {
-  padding: 34px 20px;
+body {
+  font-family: "Poppins", sans-serif;
+  background: var(--cream-bg);
+  margin: 0;
+}
+
+/* ===== Section ===== */
+.admin-orders-section {
+  max-width: 1100px;
+  margin: 42px auto 0;
+  padding: 0 20px 28px 20px;
+}
+
+.admin-orders-section h2 {
   text-align: center;
-  max-width: 1200px;
-  margin: 0 auto;
+  color: var(--choco-800);
+  margin-bottom: 32px;
+  font-size: 2rem;
 }
 
-.products h2 {
-  font-size: 1.8rem;
-  color: var(--text-dark);
-  margin-bottom: 24px;
+.no-orders {
+  text-align: center;
+  color: #888;
+  font-size: 1.1rem;
+}
+
+/* ===== Grid Layout ===== */
+.orders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 22px;
+}
+
+/* ===== Order Card ===== */
+.order-card {
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(89, 39, 18, 0.12);
+  border-radius: 18px;
+  padding: 26px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 2px solid var(--gray);
+  transition: all 0.2s ease;
   position: relative;
 }
 
-.products h2::after {
-  content: "";
-  display: block;
-  width: 80px;
-  height: 4px;
-  background-color: var(--accent);
-  margin: 10px auto 0;
-  border-radius: 10px;
+.order-card:hover {
+  box-shadow: 0 16px 36px rgba(89, 39, 18, 0.17);
+  border-color: var(--caramel);
+  transform: translateY(-4px);
 }
 
-/* ===== Table Styling ===== */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+/* ===== Header ===== */
+.order-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-th,
-td {
-  padding: 12px 16px;
-  border-bottom: 1px solid #eee;
-  color: var(--text-dark);
+.order-id {
+  background: var(--caramel);
+  color: var(--choco-900);
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.order-status {
+  font-weight: 700;
+  text-transform: capitalize;
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-size: 0.9rem;
+}
+
+.order-status.pending {
+  background: var(--yellow);
+  color: #493114;
+}
+
+.order-status.completed {
+  background: var(--green);
+  color: #fff;
+}
+
+.order-status.cancelled {
+  background: var(--strawberry);
+  color: #fff;
+}
+
+/* ===== Customer Info ===== */
+.customer-name {
+  color: var(--choco-900);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.order-meta {
+  font-size: 0.93rem;
+  color: #9a7757;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ===== Items ===== */
+.order-items {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed #ecdcc3;
+  padding: 8px 0;
   font-size: 0.95rem;
 }
 
-th {
-  background-color: var(--light-bg);
-  color: var(--text-dark);
-  font-weight: 700;
-  text-align: center;
-}
-
-td {
-  text-align: center;
-}
-
-tr:last-child td {
+.order-item:last-child {
   border-bottom: none;
 }
 
-tr:hover {
-  background-color: #fff5ef;
-  transition: background 0.2s ease;
-}
-
-/* ===== Details Dropdown ===== */
-details {
-  text-align: left;
-}
-
-summary {
-  cursor: pointer;
-  color: var(--accent);
+.item-name {
+  color: var(--choco-900);
   font-weight: 600;
-  text-decoration: underline;
-  transition: color 0.2s ease;
 }
 
-summary:hover {
-  color: #43210a;
+.item-qty {
+  color: #b48a63;
+  font-weight: 500;
 }
 
-ul {
-  list-style: none;
-  margin: 8px 0;
-  padding: 0;
+.item-total {
+  color: var(--choco-800);
+  font-weight: 700;
 }
 
-ul li {
-  padding: 4px 0;
-  color: var(--text-light);
-  font-size: 0.9rem;
-}
-
-/* ===== Form Styling ===== */
-form {
+/* ===== Form ===== */
+.status-form {
   display: flex;
-  align-items: center;
   gap: 8px;
-  margin-top: 8px;
+  justify-content: flex-end;
+  margin-top: 10px;
 }
 
-select {
+.status-form select {
   padding: 6px 10px;
   border-radius: 8px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--gray);
   background: #fff;
-  font-family: "Poppins", sans-serif;
+  color: var(--choco-900);
   font-size: 0.9rem;
-  color: var(--text-dark);
-  outline: none;
+  font-family: "Poppins", sans-serif;
   cursor: pointer;
-  transition: border 0.2s ease;
+  transition: border 0.2s;
 }
 
-select:focus {
-  border-color: var(--accent);
+.status-form select:focus {
+  border-color: var(--caramel);
 }
 
-button {
-  background-color: var(--accent);
+.status-form button {
+  background: var(--choco-700);
   color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 6px 12px;
+  padding: 6px 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease;
-  font-family: "Poppins", sans-serif;
+  transition: background 0.2s;
 }
 
-button:hover {
-  background-color: #43210a;
+.status-form button:hover {
+  background: var(--choco-900);
 }
 
 /* ===== Responsive ===== */
-@media (max-width: 768px) {
-  table,
-  thead,
-  tbody,
-  th,
-  td,
-  tr {
-    display: block;
+@media (max-width: 650px) {
+  .orders-grid {
+    grid-template-columns: 1fr;
   }
 
-  th {
-    display: none;
+  .order-card {
+    padding: 18px 14px;
+    font-size: 0.94rem;
   }
 
-  td {
-    text-align: right;
-    padding-left: 50%;
-    position: relative;
+  .status-form {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 16px;
-    width: 45%;
-    text-align: left;
-    font-weight: 600;
-    color: var(--text-light);
+  .status-form button {
+    width: 100%;
+    text-align: center;
   }
 }
